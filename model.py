@@ -6,7 +6,7 @@ class SnapthatT5(TFT5ForConditionalGeneration):
         super().__init__(*args, **kwargs)
         self.loss_tracker= tf.keras.metrics.Mean(name='loss') 
     
-    @tf.function
+    # @tf.function
     def train_step(self, data):
         x = data
         y = x["labels"]
@@ -20,12 +20,12 @@ class SnapthatT5(TFT5ForConditionalGeneration):
             grads = tape.gradient(loss, self.trainable_variables)
             
         self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
-        lr = self.optimizer._decayed_lr(tf.float32)
+        # lr = self.optimizer._decayed_lr(tf.float32)
         
         self.loss_tracker.update_state(loss)        
         self.compiled_metrics.update_state(y, logits)
         metrics = {m.name: m.result() for m in self.metrics}
-        metrics.update({'lr': lr})
+        # metrics.update({'lr': lr})
         
         return metrics
 
