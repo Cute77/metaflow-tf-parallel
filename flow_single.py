@@ -109,8 +109,8 @@ class T5TensorFlowFlow(FlowSpec):
 
         train_ds = train_dataset.map(encode)
         valid_ds = valid_dataset.map(encode)
-        self.tf_train_ds = to_tf_dataset(train_ds)
-        self.tf_valid_ds = to_tf_dataset(valid_ds)
+        tf_train_ds = to_tf_dataset(train_ds)
+        tf_valid_ds = to_tf_dataset(valid_ds)
         print("to_tf_dataset done")
 
         # tf_config = json.loads(os.environ["TF_CONFIG"])
@@ -122,8 +122,8 @@ class T5TensorFlowFlow(FlowSpec):
         train_steps = int(np.ceil(len(train_dataset)/self.batch_size))
         valid_steps = int(np.ceil(len(valid_dataset)/self.batch_size))
 
-        tf_train_ds = create_dataset(self.tf_train_ds, batch_size=global_batch_size, shuffling=True)
-        tf_valid_ds = create_dataset(self.tf_valid_ds, batch_size=global_batch_size, shuffling=False)
+        tf_train_ds = create_dataset(tf_train_ds, batch_size=global_batch_size, shuffling=True)
+        tf_valid_ds = create_dataset(tf_valid_ds, batch_size=global_batch_size, shuffling=False)
 
         tensorboard_logpath = self.tensorboard_logdir + "/" + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=tensorboard_logpath)
